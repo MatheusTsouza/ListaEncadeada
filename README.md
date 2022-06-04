@@ -1,1 +1,1 @@
-# ListaEncadeada
+# ListaDuplamenteEncadeada
