@@ -3,10 +3,8 @@ public class DoubleLinkedList <T>{
     Node<T> top;
     int size;
 
-    public DoubleLinkedList(){}
-
     public boolean isEmpty() {
-        if(size < 0){
+        if(size <= 0){
             return true;
         }
         return false;
@@ -24,8 +22,10 @@ public class DoubleLinkedList <T>{
         Node node = new Node(data);
         if(isEmpty()){
             base = node;
+            top = node;
         }
         node.prev = top;
+        top.next = node;
         top = node;
         top.next = null;
         size++;
@@ -43,10 +43,31 @@ public class DoubleLinkedList <T>{
 
     // Remove especifico
     public T remove(Node<T> node) {
-        return null;
+        T data = node.data;
+
+        if(node.prev == null){
+            base = node.next;
+        } else {
+            node.prev.next = node.next;
+        }
+
+        if(node.next == null) {
+            top = node.prev;
+        } else {
+            node.next.prev = node.prev;
+        }
+
+        size--;
+
+        return data;
     }
 
-    // Usa esse magrao aqui pra buscar node cima
+    public T remove(int pos){
+        var temp = getNode(pos).data;
+        remove(getNode(pos));
+        return temp;
+    }
+
     public Node<T> getNode(int pos) {
         Node<T> temp = null;
         if(pos < size){
@@ -55,6 +76,7 @@ public class DoubleLinkedList <T>{
                 temp = base;
                 for (int i = 0; i < pos; i++) {
                     temp = temp.next;
+                    System.out.println(temp.data);
                     return temp;
                 }
             } else {
@@ -68,13 +90,18 @@ public class DoubleLinkedList <T>{
         return temp;
     }
 
-    // Acessa o nó atraves do metodo getNode(pos) e retorna o dado
     public T get(int pos) {
-        return ;
+        return getNode(pos).data;
     }
 
-    // Acessa o no atraves do metodo getNode(pos) e define o novo valor ao dado do nó
     public void set(int pos, T data) {
+        getNode(pos).data = data;
+    }
 
+    @Override
+    public String toString() {
+        var text = "[ ";
+        for (Node <T> node = base; node != null; node = node.next) text += node.data + " ";
+        return text += "]";
     }
 }
